@@ -166,7 +166,9 @@ def load_manifest(cfg: dict, refresh: bool = False) -> tuple[dict, str]:
     if not refresh and cache_file.exists():
         try:
             cached = json.loads(cache_file.read_text(encoding="utf-8"))
-            if time.time() - cached.get("_fetched", 0) < 6 * 3600:
+            # 换了镜像站仓库就重新读，避免用到旧来源的缓存
+            if (cached.get("_repo", "") == cfg.get("repo", "")
+                    and time.time() - cached.get("_fetched", 0) < 6 * 3600):
                 return cached["data"], cached.get("_source", "本地缓存")
         except (OSError, ValueError):
             pass
@@ -182,7 +184,8 @@ def load_manifest(cfg: dict, refresh: bool = False) -> tuple[dict, str]:
             if isinstance(data, dict) and data.get("versions"):
                 CACHE_DIR.mkdir(parents=True, exist_ok=True)
                 cache_file.write_text(
-                    json.dumps({"_fetched": time.time(), "_source": label, "data": data}),
+                    json.dumps({"_fetched": time.time(), "_source": label,
+                                "_repo": cfg.get("repo", ""), "data": data}),
                     encoding="utf-8",
                 )
                 return data, label
@@ -851,6 +854,7 @@ def cmd_setup(argv: list[str]) -> int:
     cfg = load_config()
     cfg["repo"] = repo
     save_config(cfg)
+    (CACHE_DIR / "manifest.json").unlink(missing_ok=True)  # 清掉旧缓存，下次立刻用新仓库
     print(f"  ✅ 镜像站仓库已设置为 {repo}")
     try:
         fetch_json(f"{RAW_BASE.format(repo=repo)}/manifest.json")

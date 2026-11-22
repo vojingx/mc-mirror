@@ -200,7 +200,18 @@ def main() -> int:
     print(f"  共 {manifest['count']} 个版本，最新正式版 {manifest['latest'].get('release')}")
 
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
-    dump(INDEX_DIR / "manifest.json", manifest)
+    # 版本没变化就沿用原来的生成时间，避免定时任务每天产生“空提交”
+    manifest_path = INDEX_DIR / "manifest.json"
+    if manifest_path.exists():
+        try:
+            old = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if (old.get("versions") == manifest["versions"]
+                    and old.get("latest") == manifest["latest"]):
+                manifest["generated"] = old.get("generated", manifest["generated"])
+        except (OSError, ValueError):
+            pass
+
+    dump(manifest_path, manifest)
 
     mirrored: dict[str, str] = {}
     if not args.no_mirror:
