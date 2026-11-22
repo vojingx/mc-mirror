@@ -2,7 +2,7 @@
   "schema": 1,
   "name": "hello Minecraft 版本数据库",
   "source": "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
-  "generated": "2026-11-22T05:58:22Z",
+  "generated": "2026-11-22T10:56:26Z",
   "latest": {
     "release": "26.3",
     "snapshot": "26.4-snapshot-10"
