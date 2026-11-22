@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "generated": "2026-11-22T05:58:22Z",
+  "source": "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+  "version_count": 925,
+  "latest": {
+    "release": "26.3",
+    "snapshot": "26.4-snapshot-10"
+  },
+  "mirrored": {
+    "26.1": "versions/26.1.json",
+    "26.1.1": "versions/26.1.1.json",
+    "26.1.2": "versions/26.1.2.json",
+    "26.3": "versions/26.3.json",
+    "26.2": "versions/26.2.json"
+  }
+}

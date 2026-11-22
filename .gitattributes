@@ -1,0 +1,4 @@
+# 统一换行，避免 Windows 用户拿到 LF 的批处理文件
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf

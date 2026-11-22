@@ -1,0 +1,13 @@
+# 本地测试 / 生成物
+_probe/
+_test_mc/
+__pycache__/
+*.pyc
+build/
+dist/
+*.spec
+
+# 玩家数据不进门库
+saves/
+logs/
+options.txt
